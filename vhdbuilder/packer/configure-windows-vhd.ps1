@@ -670,7 +670,7 @@ try{
             Set-WinRmServiceDelayedStart
             Update-DefenderSignatures
             Install-WindowsPatches
-            Install-OpenSSH
+            # Install-OpenSSH
             Update-WindowsFeatures
         }
         "2" {
