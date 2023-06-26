@@ -33,7 +33,7 @@ installKataDeps() {
         fi
       done
 
-      echo "place UVM build pipeline artifacts"
+      echo "install UVM build pipeline artifacts from storage account"
       wget "https://mitchzhu.blob.core.windows.net/public/igvm-measurement" -O igvm-measurement
       wget "https://mitchzhu.blob.core.windows.net/public/igvm.bin" -O igvm.bin
       wget "https://mitchzhu.blob.core.windows.net/public/kata-containers-initrd.img" -O kata-containers-initrd.img
