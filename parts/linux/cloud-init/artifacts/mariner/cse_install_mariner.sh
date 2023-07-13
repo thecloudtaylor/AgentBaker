@@ -54,14 +54,6 @@ installKataDeps() {
       mv cloud-hypervisor-igvm /opt/confidential-containers/bin/cloud-hypervisor-igvm
       chmod 755 /opt/confidential-containers/bin/cloud-hypervisor-igvm
 
-      echo "install kata-cc packages from storage account"
-      wget "https://mitchzhu.blob.core.windows.net/public/kernel-uvm-5.15.110.mshv2-2.cm2.x86_64.rpm" -O kernel-uvm.x86_64.rpm
-      wget "https://mitchzhu.blob.core.windows.net/public/kernel-uvm-devel-5.15.110.mshv2-2.cm2.x86_64.rpm" -O kernel-uvm-devel.x86_64.rpm
-      wget "https://mitchzhu.blob.core.windows.net/public/kata-containers-cc-0.4.2-1.cm2.x86_64.rpm" -O kata-containers-cc.x86_64.rpm
-      rpm -ihv kernel-uvm.x86_64.rpm
-      rpm -ihv kernel-uvm-devel.x86_64.rpm
-      rpm -ihv kata-containers-cc.x86_64.rpm
-
       echo "create snapshotter dir"
       mkdir -p /var/lib/containerd/io.containerd.snapshotter.v1.tardev/staging
 
