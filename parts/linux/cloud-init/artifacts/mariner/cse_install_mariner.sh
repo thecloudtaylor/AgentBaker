@@ -26,8 +26,14 @@ installDeps() {
 }
 
 installKataDeps() {
+    # temp! pending merge of https://github.com/microsoft/CBL-Mariner/pull/5765
+    wget "https://mitchzhu.blob.core.windows.net/public/initramfs-2.0-13.cm2.x86_64.rpm" -O initramfs-2.0-13.cm2.x86_64.rpm
+
+    rpm -Uhv initramfs-2.0-13.cm2.x86_64.rpm
+    # !temp
+
     if [[ $OS_VERSION != "1.0" ]]; then
-      for dnf_package in kernel-mshv-5.15.110.mshv2-3.cm2 cloud-hypervisor-31.1-1.cm2 kata-containers-3.1.0-2.cm2 moby-containerd-cc-1.7.1-2.cm2 mshv-bootloader-25357.1.230428-1528.1.cm2 mshv-linuxloader-0.5.0-2.3.cm2 mshv-25357.1.230428-1528.2.cm2 kernel-uvm-5.15.110.mshv2-2.cm2 kernel-uvm-devel-5.15.110.mshv2-2.cm2 kata-containers-cc-0.4.2-1.cm2; do
+      for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc mshv-bootloader-lx  mshv kernel-uvm-5.15.110.mshv2-2.cm2 kernel-uvm-devel-5.15.110.mshv2-2.cm2 kata-containers-cc-0.4.2-1.cm2; do
         if ! dnf_install 30 1 600 $dnf_package; then
           exit $ERR_APT_INSTALL_TIMEOUT
         fi
@@ -53,6 +59,12 @@ installKataDeps() {
       mkdir -p /opt/confidential-containers/bin/
       mv cloud-hypervisor-igvm /opt/confidential-containers/bin/cloud-hypervisor-igvm
       chmod 755 /opt/confidential-containers/bin/cloud-hypervisor-igvm
+
+      # temp! pending update to latest kernel-mshv in Mariner Core
+      wget "https://mitchzhu.blob.core.windows.net/public/kernel-mshv-5.15.118.mshv4-1000.g594942f4.lv2.x86_64.rpm" -O kernel-mshv-5.15.118.mshv4-1000.g594942f4.lv2.x86_64.rpm
+
+      rpm -Uhv --nodeps kernel-mshv-5.15.118.mshv4-1000.g594942f4.lv2.x86_64.rpm
+      # !temp
 
       echo "create snapshotter dir"
       mkdir -p /var/lib/containerd/io.containerd.snapshotter.v1.tardev/staging
