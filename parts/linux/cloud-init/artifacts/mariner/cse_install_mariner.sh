@@ -34,12 +34,12 @@ installKataDeps() {
       done
 
       echo "install UVM build pipeline artifacts from storage account"
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-7-12.bin" -O igvm.bin
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-7-12.bin" -O igvm-debug.bin
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-measurement-7-12" -O igvm-measurement
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-measurement-7-12" -O igvm-debug-measurement
-      wget "https://mitchzhu.blob.core.windows.net/public/reference-info-base64-7-12" -O reference-info-base64
-      wget "https://mitchzhu.blob.core.windows.net/public/kata-containers-initrd-7-12.img" -O kata-containers-initrd.img
+      wget "https://mitchzhu.blob.core.windows.net/public/igvm-76080001.bin" -O igvm.bin
+      wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-76080001.bin" -O igvm-debug.bin
+      wget "https://mitchzhu.blob.core.windows.net/public/igvm-measurement-76080001" -O igvm-measurement
+      wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-measurement-76080001" -O igvm-debug-measurement
+      wget "https://mitchzhu.blob.core.windows.net/public/reference-info-base64-76080001" -O reference-info-base64
+      wget "https://mitchzhu.blob.core.windows.net/public/kata-containers-initrd-76080001.img" -O kata-containers-initrd.img
       mkdir -p /opt/confidential-containers/share/kata-containers/
       mv igvm.bin /opt/confidential-containers/share/kata-containers/igvm.bin
       mv igvm-debug.bin /opt/confidential-containers/share/kata-containers/igvm-debug.bin
@@ -49,7 +49,7 @@ installKataDeps() {
       mv kata-containers-initrd.img /opt/confidential-containers/share/kata-containers/kata-containers-initrd.img
 
       echo "install cloud-hypervisor-igvm from storage account"
-      wget "https://mitchzhu.blob.core.windows.net/public/cloud-hypervisor-igvm-7-12" -O cloud-hypervisor-igvm
+      wget "https://mitchzhu.blob.core.windows.net/public/cloud-hypervisor-igvm-76080001" -O cloud-hypervisor-igvm
       mkdir -p /opt/confidential-containers/bin/
       mv cloud-hypervisor-igvm /opt/confidential-containers/bin/cloud-hypervisor-igvm
       chmod 755 /opt/confidential-containers/bin/cloud-hypervisor-igvm
