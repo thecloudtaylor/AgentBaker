@@ -33,7 +33,7 @@ installKataDeps() {
     # !temp
 
     if [[ $OS_VERSION != "1.0" ]]; then
-      for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc mshv-bootloader-lx  mshv kernel-uvm-5.15.110.mshv2-2.cm2 kernel-uvm-devel-5.15.110.mshv2-2.cm2 kata-containers-cc-0.4.2-1.cm2; do
+      for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc hvloader mshv-bootloader-lx  mshv kernel-uvm-5.15.110.mshv2-2.cm2 kernel-uvm-devel-5.15.110.mshv2-2.cm2 kata-containers-cc-0.4.2-1.cm2; do
         if ! dnf_install 30 1 600 $dnf_package; then
           exit $ERR_APT_INSTALL_TIMEOUT
         fi
