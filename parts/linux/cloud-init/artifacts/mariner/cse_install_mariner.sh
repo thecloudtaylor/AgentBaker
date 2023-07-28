@@ -33,7 +33,7 @@ installKataDeps() {
     # !temp
 
     if [[ $OS_VERSION != "1.0" ]]; then
-      for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc hvloader mshv-bootloader-lx  mshv kernel-uvm-5.15.110.mshv2-2.cm2 kernel-uvm-devel-5.15.110.mshv2-2.cm2 kata-containers-cc-0.4.2-1.cm2; do
+      for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc hvloader mshv-bootloader-lx mshv kernel-uvm-5.15.110.mshv2-2.cm2 kernel-uvm-devel-5.15.110.mshv2-2.cm2 kata-containers-cc-0.4.2-1.cm2; do
         if ! dnf_install 30 1 600 $dnf_package; then
           exit $ERR_APT_INSTALL_TIMEOUT
         fi
@@ -60,13 +60,7 @@ installKataDeps() {
       mv cloud-hypervisor-igvm /opt/confidential-containers/bin/cloud-hypervisor-igvm
       chmod 755 /opt/confidential-containers/bin/cloud-hypervisor-igvm
 
-      # temp! pending update to latest kernel-mshv in Mariner Core
-      wget "https://mitchzhu.blob.core.windows.net/public/kernel-mshv-5.15.118.mshv4-1000.g594942f4.lv2.x86_64.rpm" -O kernel-mshv-5.15.118.mshv4-1000.g594942f4.lv2.x86_64.rpm
-
-      rpm -Uhv --nodeps kernel-mshv-5.15.118.mshv4-1000.g594942f4.lv2.x86_64.rpm
-      # !temp
-
-      echo "create snapshotter dir"
+      echo "Create snapshotter dir"
       mkdir -p /var/lib/containerd/io.containerd.snapshotter.v1.tardev/staging
 
       echo "append kata-cc config to enable IGVM"
