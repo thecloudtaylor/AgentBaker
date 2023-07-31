@@ -35,7 +35,7 @@ if [[ $? != 0 ]]; then
   privileged_without_host_devices = true
   pod_annotations = ["io.katacontainers.*"]
   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata-cc.options]
-    ConfigPath = "/opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml"
+    ConfigPath = "/opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml"
 EOF
 
   echo "Config change applied, restarting containerd"
