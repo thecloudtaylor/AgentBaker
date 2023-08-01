@@ -65,9 +65,12 @@ installKataDeps() {
       echo "Create snapshotter dir"
       mkdir -p /var/lib/containerd/io.containerd.snapshotter.v1.tardev/staging
 
-      echo "append kata-cc config to enable IGVM"
-      sed -i '/image =/a igvm = "/opt/confidential-containers/share/kata-containers/igvm-debug.bin"' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
+      echo "append kata-cc config to use IGVM"
+      sed -i 's/cloud-hypervisor-snp/cloud-hypervisor-igvm/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
+      sed -i 's/valid_hypervisor_paths/#valid_hypervisor_paths/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
+      sed -i '/#valid_hypervisor_paths =/a valid_hypervisor_paths = ["/opt/confidential-containers/bin/cloud-hypervisor-igvm"]' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
       sed -i 's/cloud-hypervisor/cloud-hypervisor-igvm/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
+      sed -i '/image =/a igvm = "/opt/confidential-containers/share/kata-containers/kata-containers-igvm.img"' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
       # Comment out image and kernel configs
       sed -i 's/kernel = /#kernel = /g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
       sed -i 's/image = /#image = /g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
