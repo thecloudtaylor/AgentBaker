@@ -26,12 +26,6 @@ installDeps() {
 }
 
 installKataDeps() {
-    # temp! pending merge of https://github.com/microsoft/CBL-Mariner/pull/5765
-    wget "https://mitchzhu.blob.core.windows.net/public/initramfs-2.0-13.cm2.x86_64.rpm" -O initramfs-2.0-13.cm2.x86_64.rpm
-
-    rpm -Uhv initramfs-2.0-13.cm2.x86_64.rpm
-    # !temp
-
     if [[ $OS_VERSION != "1.0" ]]; then
       for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc hvloader mshv-bootloader-lx mshv; do
         if ! dnf_install 30 1 600 $dnf_package; then
