@@ -33,33 +33,6 @@ installKataDeps() {
         fi
       done
 
-#TODO: are we not feeding those in via the prior UVM build pipeline? Probably that was already different in another branch. Needs to be adapted so that things can be taken from a prior pipeline but not a blob storage
-      echo "install UVM build pipeline artifacts from storage account"
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-76080001.bin" -O igvm.bin
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-76080001.bin" -O igvm-debug.bin
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-measurement-76080001" -O igvm-measurement
-      wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-measurement-76080001" -O igvm-debug-measurement
-      wget "https://mitchzhu.blob.core.windows.net/public/reference-info-base64-76080001" -O reference-info-base64
-      wget "https://mitchzhu.blob.core.windows.net/public/kata-containers-initrd-76080001.img" -O kata-containers-initrd.img
-      mkdir -p /opt/confidential-containers/share/kata-containers/
-      mv igvm.bin /opt/confidential-containers/share/kata-containers/igvm.bin
-      mv igvm-debug.bin /opt/confidential-containers/share/kata-containers/igvm-debug.bin
-      mv igvm-measurement /opt/confidential-containers/share/kata-containers/igvm-measurement
-      mv igvm-debug-measurement /opt/confidential-containers/share/kata-containers/igvm-debug-measurement
-      mv reference-info-base64 /opt/confidential-containers/share/kata-containers/reference-info-base64
-      mv kata-containers-initrd.img /opt/confidential-containers/share/kata-containers/kata-containers-initrd.img
-
-#TODO let us change things right now: No more storage accounts for packages. If we can't build in the release pipeline natively in AB for now, we have to live with it: depends on package availability.
-#since we can run this in our pre-release pipeline we will have the packages available. So, let us:
-#add cloud-hypervisor-cvm package above, remove below
-#add kata-containers-cc package above, remove below
-#add kernel-uvm and kernel-uvm-cvm packages above - try to remove the devel packages below, we should only need it to build the tarfs module. If we still build this tarfs module for vanilla Kata during the first boot (I think so, we may leave it for now, but let's definitely try to not list kernel-uvm-cvm-devel
-      echo "install cloud-hypervisor-igvm from storage account"
-      wget "https://mitchzhu.blob.core.windows.net/public/cloud-hypervisor-igvm-76080001" -O cloud-hypervisor-igvm
-      mkdir -p /opt/confidential-containers/bin/
-      mv cloud-hypervisor-igvm /opt/confidential-containers/bin/cloud-hypervisor-igvm
-      chmod 755 /opt/confidential-containers/bin/cloud-hypervisor-igvm
-
       echo "TEMP: install kata-cc packages from storage account"
       wget "https://mitchzhu.blob.core.windows.net/public/kernel-uvm-5.15.110.mshv2-2.cm2.x86_64.rpm" -O kernel-uvm.x86_64.rpm
       wget "https://mitchzhu.blob.core.windows.net/public/kernel-uvm-devel-5.15.110.mshv2-2.cm2.x86_64.rpm" -O kernel-uvm-devel.x86_64.rpm

@@ -489,6 +489,41 @@
     },
     {
       "type": "file",
+      "source": "igvm-debug-measurement",
+      "destination": "/home/packer/igvm-debug-measurement"
+    },
+    {
+      "type": "file",
+      "source": "kata-containers-igvm-debug.img",
+      "destination": "/home/packer/kata-containers-igvm-debug.img"
+    },
+    {
+      "type": "file",
+      "source": "igvm-measurement",
+      "destination": "/home/packer/igvm-measurement"
+    },
+    {
+      "type": "file",
+      "source": "kata-containers-igvm.img",
+      "destination": "/home/packer/kata-containers-igvm.img"
+    },
+    {
+      "type": "file",
+      "source": "kata-containers-initrd.img",
+      "destination": "/home/packer/kata-containers-initrd.img"
+    },
+    {
+      "type": "file",
+      "source": "reference-info-base64",
+      "destination": "/home/packer/reference-info-base64"
+    },
+    {
+      "type": "file",
+      "source": "cloud-hypervisor-igvm",
+      "destination": "/home/packer/cloud-hypervisor-igvm"
+    },
+    {
+      "type": "file",
       "source": "vhdbuilder/notice.txt",
       "destination": "/home/packer/NOTICE.txt"
     },
