@@ -33,6 +33,7 @@ installKataDeps() {
         fi
       done
 
+#TODO: are we not feeding those in via the prior UVM build pipeline? Probably that was already different in another branch. Needs to be adapted so that things can be taken from a prior pipeline but not a blob storage
       echo "install UVM build pipeline artifacts from storage account"
       wget "https://mitchzhu.blob.core.windows.net/public/igvm-76080001.bin" -O igvm.bin
       wget "https://mitchzhu.blob.core.windows.net/public/igvm-debug-76080001.bin" -O igvm-debug.bin
@@ -48,6 +49,11 @@ installKataDeps() {
       mv reference-info-base64 /opt/confidential-containers/share/kata-containers/reference-info-base64
       mv kata-containers-initrd.img /opt/confidential-containers/share/kata-containers/kata-containers-initrd.img
 
+#TODO let us change things right now: No more storage accounts for packages. If we can't build in the release pipeline natively in AB for now, we have to live with it: depends on package availability.
+#since we can run this in our pre-release pipeline we will have the packages available. So, let us:
+#add cloud-hypervisor-cvm package above, remove below
+#add kata-containers-cc package above, remove below
+#add kernel-uvm and kernel-uvm-cvm packages above - try to remove the devel packages below, we should only need it to build the tarfs module. If we still build this tarfs module for vanilla Kata during the first boot (I think so, we may leave it for now, but let's definitely try to not list kernel-uvm-cvm-devel
       echo "install cloud-hypervisor-igvm from storage account"
       wget "https://mitchzhu.blob.core.windows.net/public/cloud-hypervisor-igvm-76080001" -O cloud-hypervisor-igvm
       mkdir -p /opt/confidential-containers/bin/
