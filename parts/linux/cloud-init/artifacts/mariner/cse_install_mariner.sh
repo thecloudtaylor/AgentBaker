@@ -68,9 +68,6 @@ installKataDeps() {
       rpm -ihv kernel-uvm-devel.x86_64.rpm
       rpm -ihv kata-containers-cc.x86_64.rpm
       
-      echo "Create snapshotter dir"
-      mkdir -p /var/lib/containerd/io.containerd.snapshotter.v1.tardev/staging
-
       echo "append kata-cc config to use IGVM"
 #TODO see comment on line 74
       sed -i 's/cloud-hypervisor-snp/cloud-hypervisor-igvm/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
