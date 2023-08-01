@@ -66,12 +66,17 @@ installKataDeps() {
       mkdir -p /var/lib/containerd/io.containerd.snapshotter.v1.tardev/staging
 
       echo "append kata-cc config to use IGVM"
+#TODO see comment on line 74
       sed -i 's/cloud-hypervisor-snp/cloud-hypervisor-igvm/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
       sed -i 's/valid_hypervisor_paths/#valid_hypervisor_paths/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
+#TODO see comment on line 74
       sed -i '/#valid_hypervisor_paths =/a valid_hypervisor_paths = ["/opt/confidential-containers/bin/cloud-hypervisor-igvm"]' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml
+#TODO to remove or to change - we will have to point our CC config to the right CH-CHM binary. either we solve this via the initial config, or via SPEC, or here
       sed -i 's/cloud-hypervisor/cloud-hypervisor-igvm/g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
+#TODO I believe to remove - we won't use IGVM for a non-snp config      
       sed -i '/image =/a igvm = "/opt/confidential-containers/share/kata-containers/kata-containers-igvm.img"' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
       # Comment out image and kernel configs
+#TODO: kernel should not be commented, while image is already commented. so, we are good to remove both lines. configuration-clh likelycomes as: kernel, initrd, uncommented while #image commented.
       sed -i 's/kernel = /#kernel = /g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
       sed -i 's/image = /#image = /g' /opt/confidential-containers/share/defaults/kata-containers/configuration-clh.toml
     fi
