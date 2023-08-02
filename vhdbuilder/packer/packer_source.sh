@@ -125,28 +125,31 @@ copyPackerFiles() {
   cpAndMode $CSE_REDACT_SRC $CSE_REDACT_DEST 600
 
   if grep -q "kata" <<< "$FEATURE_FLAGS"; then
+    # KataCC SPEC file assume skata config points to the files exactly under this path
+    KATA_CONFIG_DIR=/opt/confidential-containers/share/kata-containers
+
     IGVM_DEBUG_MEASUREMENT_SRC=/home/packer/igvm-debug-measurement
-    IGVM_DEBUG_MEASUREMENT_DEST=/opt/confidential-containers/share/kata-containers/igvm-debug-measurement
+    IGVM_DEBUG_MEASUREMENT_DEST=$KATA_CONFIG_DIR/igvm-debug-measurement
     cpAndMode $IGVM_DEBUG_MEASUREMENT_SRC $IGVM_DEBUG_MEASUREMENT_DEST 0755
 
     IGVM_DEBUG_BIN_SRC=/home/packer/kata-containers-igvm-debug.img
-    IGVM_DEBUG_BIN_DEST=/opt/confidential-containers/share/kata-containers/kata-containers-igvm-debug.img
+    IGVM_DEBUG_BIN_DEST=$KATA_CONFIG_DIR/kata-containers-igvm-debug.img
     cpAndMode $IGVM_DEBUG_BIN_SRC $IGVM_DEBUG_BIN_DEST 0755
 
     IGVM_MEASUREMENT_SRC=/home/packer/igvm-measurement
-    IGVM_MEASUREMENT_DEST=/opt/confidential-containers/share/kata-containers/igvm-measurement
+    IGVM_MEASUREMENT_DEST=$KATA_CONFIG_DIR/igvm-measurement
     cpAndMode $IGVM_MEASUREMENT_SRC $IGVM_MEASUREMENT_DEST 0755
 
     IGVM_BIN_SRC=/home/packer/kata-containers-igvm.img
-    IGVM_BIN_DEST=/opt/confidential-containers/share/kata-containers/kata-containers-igvm.img
+    IGVM_BIN_DEST=$KATA_CONFIG_DIR/kata-containers-igvm.img
     cpAndMode $IGVM_BIN_SRC $IGVM_BIN_DEST 0755
 
     KATA_INITRD_SRC=/home/packer/kata-containers-initrd.img
-    KATA_INITRD_DEST=/opt/confidential-containers/share/kata-containers/kata-containers-initrd.img
+    KATA_INITRD_DEST=$KATA_CONFIG_DIR/kata-containers-initrd.img
     cpAndMode $KATA_INITRD_SRC $KATA_INITRD_DEST 0755
 
     REF_INFO_SRC=/home/packer/reference-info-base64
-    REF_INFO_DEST=/opt/confidential-containers/share/kata-containers/reference-info-base64
+    REF_INFO_DEST=$KATA_CONFIG_DIR/reference-info-base64
     cpAndMode $REF_INFO_SRC $REF_INFO_DEST 0755
 
     SETUP_KATA_SRC=/home/packer/setupkata.sh
