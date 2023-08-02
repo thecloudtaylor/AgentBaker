@@ -149,10 +149,6 @@ copyPackerFiles() {
     REF_INFO_DEST=/opt/confidential-containers/share/kata-containers/reference-info-base64
     cpAndMode $REF_INFO_SRC $REF_INFO_DEST 0755
 
-    KATA_CLH_SRC=/home/packer/cloud-hypervisor-igvm
-    KATA_CLH_DEST=/opt/confidential-containers/bin/cloud-hypervisor-igvm
-    cpAndMode $KATA_CLH_SRC $KATA_CLH_DEST 0755
-
     SETUP_KATA_SRC=/home/packer/setupkata.sh
     SETUP_KATA_DEST=/setupkata.sh
     cpAndMode $SETUP_KATA_SRC $SETUP_KATA_DEST 0755
