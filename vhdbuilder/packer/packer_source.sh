@@ -125,7 +125,7 @@ copyPackerFiles() {
   cpAndMode $CSE_REDACT_SRC $CSE_REDACT_DEST 600
 
   if grep -q "kata" <<< "$FEATURE_FLAGS"; then
-    # KataCC SPEC file assume skata config points to the files exactly under this path
+    # KataCC SPEC file assumes kata config points to the files exactly under this path
     KATA_CONFIG_DIR=/opt/confidential-containers/share/kata-containers
 
     IGVM_DEBUG_BIN_SRC=/home/packer/kata-containers-igvm-debug.img
