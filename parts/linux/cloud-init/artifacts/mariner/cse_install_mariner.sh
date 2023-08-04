@@ -27,7 +27,8 @@ installDeps() {
 
 installKataDeps() {
     if [[ $OS_VERSION != "1.0" ]]; then
-      for dnf_package in kernel-mshv cloud-hypervisor kata-containers moby-containerd-cc hvloader mshv-bootloader-lx mshv cloud-hypervisor-cvm kernel-uvm kernel-uvm-devel kernel-uvm-cvm kata-containers-cc; do
+      # TODO - remove kernel-uvm-devel once we build the vanilla Kata UVM in our UVM build pipeline
+      for dnf_package in kernel-mshv hvloader mshv-bootloader-lx mshv cloud-hypervisor cloud-hypervisor-cvm moby-containerd-cc kata-containers kata-containers-cc kernel-uvm kernel-uvm-cvm kernel-uvm-devel; do
         if ! dnf_install 30 1 600 $dnf_package; then
           exit $ERR_APT_INSTALL_TIMEOUT
         fi
@@ -62,7 +63,7 @@ installNvidiaFabricManager() {
 installNvidiaContainerRuntime() {
     MARINER_NVIDIA_CONTAINER_RUNTIME_VERSION="3.11.0"
     MARINER_NVIDIA_CONTAINER_TOOLKIT_VERSION="1.11.0"
-    
+
     for nvidia_package in nvidia-container-runtime-${MARINER_NVIDIA_CONTAINER_RUNTIME_VERSION} nvidia-container-toolkit-${MARINER_NVIDIA_CONTAINER_TOOLKIT_VERSION} nvidia-container-toolkit-base-${MARINER_NVIDIA_CONTAINER_TOOLKIT_VERSION} libnvidia-container-tools-${MARINER_NVIDIA_CONTAINER_TOOLKIT_VERSION} libnvidia-container1-${MARINER_NVIDIA_CONTAINER_TOOLKIT_VERSION}; do
       if ! dnf_install 30 1 600 $nvidia_package; then
         exit $ERR_APT_INSTALL_TIMEOUT
@@ -73,7 +74,7 @@ installNvidiaContainerRuntime() {
 enableNvidiaPersistenceMode() {
     PERSISTENCED_SERVICE_FILE_PATH="/etc/systemd/system/nvidia-persistenced.service"
     touch ${PERSISTENCED_SERVICE_FILE_PATH}
-    cat << EOF > ${PERSISTENCED_SERVICE_FILE_PATH} 
+    cat << EOF > ${PERSISTENCED_SERVICE_FILE_PATH}
 [Unit]
 Description=NVIDIA Persistence Daemon
 Wants=syslog.target
@@ -100,7 +101,7 @@ installStandaloneContainerd() {
     # azure-built runtimes have a "+azure" suffix in their version strings (i.e 1.4.1+azure). remove that here.
     CURRENT_VERSION=$(containerd -version | cut -d " " -f 3 | sed 's|v||' | cut -d "+" -f 1)
     # v1.4.1 is our lowest supported version of containerd
-    
+
     if semverCompare ${CURRENT_VERSION:-"0.0.0"} ${CONTAINERD_VERSION}; then
         echo "currently installed containerd version ${CURRENT_VERSION} is greater than (or equal to) target base version ${CONTAINERD_VERSION}. skipping installStandaloneContainerd."
     else

@@ -128,17 +128,9 @@ copyPackerFiles() {
     # KataCC SPEC file assume skata config points to the files exactly under this path
     KATA_CONFIG_DIR=/opt/confidential-containers/share/kata-containers
 
-    IGVM_DEBUG_MEASUREMENT_SRC=/home/packer/igvm-debug-measurement
-    IGVM_DEBUG_MEASUREMENT_DEST=$KATA_CONFIG_DIR/igvm-debug-measurement
-    cpAndMode $IGVM_DEBUG_MEASUREMENT_SRC $IGVM_DEBUG_MEASUREMENT_DEST 0755
-
     IGVM_DEBUG_BIN_SRC=/home/packer/kata-containers-igvm-debug.img
     IGVM_DEBUG_BIN_DEST=$KATA_CONFIG_DIR/kata-containers-igvm-debug.img
     cpAndMode $IGVM_DEBUG_BIN_SRC $IGVM_DEBUG_BIN_DEST 0755
-
-    IGVM_MEASUREMENT_SRC=/home/packer/igvm-measurement
-    IGVM_MEASUREMENT_DEST=$KATA_CONFIG_DIR/igvm-measurement
-    cpAndMode $IGVM_MEASUREMENT_SRC $IGVM_MEASUREMENT_DEST 0755
 
     IGVM_BIN_SRC=/home/packer/kata-containers-igvm.img
     IGVM_BIN_DEST=$KATA_CONFIG_DIR/kata-containers-igvm.img
