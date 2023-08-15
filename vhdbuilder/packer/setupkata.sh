@@ -6,6 +6,9 @@ done
 
 sleep 10
 
+# replace the default kata uvm config path
+sed -i -e "s|image = .*$|initrd = \"/var/cache/kata-containers/osbuilder-images/kernel-uvm/kata-containers-initrd.img\"|" /usr/share/defaults/kata-containers/configuration.toml
+
 cat /etc/containerd/config.toml | grep kata > /dev/null
 if [[ $? != 0 ]]; then
   echo "kata config needs to be applied to containerd"
