@@ -34,7 +34,6 @@ installKataDeps() {
         fi
       done
     fi
-
 }
 
 downloadGPUDrivers() {
