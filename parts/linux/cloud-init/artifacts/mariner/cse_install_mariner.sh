@@ -34,6 +34,11 @@ installKataDeps() {
         fi
       done
     fi
+
+    # replace the default kata uvm config paths
+    sed -i -e "s|image = .*$|initrd = \"/var/cache/kata-containers/osbuilder-images/kernel-uvm/kata-containers-initrd.img\"|" /usr/share/defaults/kata-containers/configuration.toml
+    sed -i -e "s|kernel = .*$|kernel = \"/usr/share/cloud-hypervisor/vmlinux.bin\"|" /usr/share/defaults/kata-containers/configuration.toml
+
 }
 
 downloadGPUDrivers() {
