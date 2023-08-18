@@ -499,6 +499,11 @@
     },
     {
       "type": "file",
+      "source": "kata-containers-initrd-base.img",
+      "destination": "/home/packer/kata-containers-initrd-base.img"
+    },
+    {
+      "type": "file",
       "source": "kata-containers-initrd.img",
       "destination": "/home/packer/kata-containers-initrd.img"
     },

@@ -126,22 +126,27 @@ copyPackerFiles() {
 
   if grep -q "kata" <<< "$FEATURE_FLAGS"; then
     # KataCC SPEC file assumes kata config points to the files exactly under this path
-    KATA_CONFIG_DIR=/opt/confidential-containers/share/kata-containers
+    KATA_CONFIG_DIR=/var/cache/kata-containers/osbuilder-images/kernel-uvm/
+    KATACC_CONFIG_DIR=/opt/confidential-containers/share/kata-containers
 
     IGVM_DEBUG_BIN_SRC=/home/packer/kata-containers-igvm-debug.img
-    IGVM_DEBUG_BIN_DEST=$KATA_CONFIG_DIR/kata-containers-igvm-debug.img
+    IGVM_DEBUG_BIN_DEST=$KATACC_CONFIG_DIR/kata-containers-igvm-debug.img
     cpAndMode $IGVM_DEBUG_BIN_SRC $IGVM_DEBUG_BIN_DEST 0755
 
     IGVM_BIN_SRC=/home/packer/kata-containers-igvm.img
-    IGVM_BIN_DEST=$KATA_CONFIG_DIR/kata-containers-igvm.img
+    IGVM_BIN_DEST=$KATACC_CONFIG_DIR/kata-containers-igvm.img
     cpAndMode $IGVM_BIN_SRC $IGVM_BIN_DEST 0755
 
-    KATA_INITRD_SRC=/home/packer/kata-containers-initrd.img
+    KATA_INITRD_SRC=/home/packer/kata-containers-initrd-base.img
     KATA_INITRD_DEST=$KATA_CONFIG_DIR/kata-containers-initrd.img
     cpAndMode $KATA_INITRD_SRC $KATA_INITRD_DEST 0755
 
+    KATACC_INITRD_SRC=/home/packer/kata-containers-initrd.img
+    KATACC_INITRD_DEST=$KATACC_CONFIG_DIR/kata-containers-initrd.img
+    cpAndMode $KATACC_INITRD_SRC $KATACC_INITRD_DEST 0755
+
     REF_INFO_SRC=/home/packer/reference-info-base64
-    REF_INFO_DEST=$KATA_CONFIG_DIR/reference-info-base64
+    REF_INFO_DEST=$KATACC_CONFIG_DIR/reference-info-base64
     cpAndMode $REF_INFO_SRC $REF_INFO_DEST 0755
 
     SETUP_KATA_SRC=/home/packer/setupkata.sh
