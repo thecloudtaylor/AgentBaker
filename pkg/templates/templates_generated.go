@@ -7326,6 +7326,7 @@ $global:KubeBinariesPackageSASURL = "{{GetParameter "kubeBinariesSASURL"}}"
 $global:WindowsKubeBinariesURL = "{{GetParameter "windowsKubeBinariesURL"}}"
 $global:KubeBinariesVersion = "{{GetParameter "kubeBinariesVersion"}}"
 $global:ContainerdUrl = "{{GetParameter "windowsContainerdURL"}}"
+# $global:ContainerdUrl = $(WINDOWS_CONTAINERD_URL_FOR_NEW_FS)
 $global:ContainerdSdnPluginUrl = "{{GetParameter "windowsSdnPluginURL"}}"
 
 ## Docker Version

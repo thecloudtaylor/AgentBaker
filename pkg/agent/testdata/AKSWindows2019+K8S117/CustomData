@@ -86,6 +86,7 @@ $global:KubeBinariesPackageSASURL = "https://acs-mirror.azureedge.net/kubernetes
 $global:WindowsKubeBinariesURL = ""
 $global:KubeBinariesVersion = "1.17.7"
 $global:ContainerdUrl = "https://k8swin.blob.core.windows.net/k8s-windows/containerd/containerplat-aks-test-0.0.8.zip"
+# $global:ContainerdUrl = $(WINDOWS_CONTAINERD_URL_FOR_NEW_FS)
 $global:ContainerdSdnPluginUrl = ""
 
 ## Docker Version
