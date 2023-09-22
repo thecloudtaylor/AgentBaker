@@ -1159,6 +1159,9 @@ root = "{{GetDataDir}}"{{- end}}
     snapshotter = "teleportd"
     disable_snapshot_annotations = false
     {{- end}}
+    {{- if IsKata }}
+    disable_snapshot_annotations = false
+    {{- end}}
     {{- if IsNSeriesSKU }}
     default_runtime_name = "nvidia-container-runtime"
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia-container-runtime]
@@ -1185,10 +1188,6 @@ root = "{{GetDataDir}}"{{- end}}
       runtime_type = "io.containerd.runc.v2"
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.untrusted.options]
       BinaryName = "/usr/bin/runc"
-    {{- end}}
-    {{- if IsKata }}
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata]
-      runtime_type = "io.containerd.kata.v2"
     {{- end}}
     {{- if IsKrustlet }}
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
@@ -1230,6 +1229,33 @@ root = "{{GetDataDir}}"{{- end}}
     type = "snapshot"
     address = "/run/teleportd/snapshotter.sock"
 {{- end}}
+{{- if IsKata }}
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata]
+  runtime_type = "io.containerd.kata.v2"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.katacli]
+  runtime_type = "io.containerd.runc.v1"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.katacli.options]
+  NoPivotRoot = false
+  NoNewKeyring = false
+  ShimCgroup = ""
+  IoUid = 0
+  IoGid = 0
+  BinaryName = "/usr/bin/kata-runtime"
+  Root = ""
+  CriuPath = ""
+  SystemdCgroup = false
+[proxy_plugins]
+  [proxy_plugins.tardev]
+    type = "snapshot"
+    address = "/run/containerd/tardev-snapshotter.sock"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata-cc]
+  snapshotter = "tardev"
+  runtime_type = "io.containerd.kata-cc.v2"
+  privileged_without_host_devices = true
+  pod_annotations = ["io.katacontainers.*"]
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata-cc.options]
+    ConfigPath = "/opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml"
+{{- end}}
 `
 
 // this pains me, but to make it respect mutability of vmss tags,
@@ -1249,6 +1275,9 @@ root = "{{GetDataDir}}"{{- end}}
     snapshotter = "teleportd"
     disable_snapshot_annotations = false
     {{- end}}
+    {{- if IsKata }}
+    disable_snapshot_annotations = false
+    {{- end}}
     default_runtime_name = "runc"
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
       runtime_type = "io.containerd.runc.v2"
@@ -1261,10 +1290,6 @@ root = "{{GetDataDir}}"{{- end}}
       runtime_type = "io.containerd.runc.v2"
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.untrusted.options]
       BinaryName = "/usr/bin/runc"
-    {{- if IsKata }}
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata]
-      runtime_type = "io.containerd.kata.v2"
-    {{- end}}
     {{- if IsKrustlet }}
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
       runtime_type = "io.containerd.spin-v0-3-0.v1"
@@ -1304,6 +1329,33 @@ root = "{{GetDataDir}}"{{- end}}
   [proxy_plugins.teleportd]
     type = "snapshot"
     address = "/run/teleportd/snapshotter.sock"
+{{- end}}
+{{- if IsKata }}
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata]
+  runtime_type = "io.containerd.kata.v2"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.katacli]
+  runtime_type = "io.containerd.runc.v1"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.katacli.options]
+  NoPivotRoot = false
+  NoNewKeyring = false
+  ShimCgroup = ""
+  IoUid = 0
+  IoGid = 0
+  BinaryName = "/usr/bin/kata-runtime"
+  Root = ""
+  CriuPath = ""
+  SystemdCgroup = false
+[proxy_plugins]
+  [proxy_plugins.tardev]
+    type = "snapshot"
+    address = "/run/containerd/tardev-snapshotter.sock"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata-cc]
+  snapshotter = "tardev"
+  runtime_type = "io.containerd.kata-cc.v2"
+  privileged_without_host_devices = true
+  pod_annotations = ["io.katacontainers.*"]
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata-cc.options]
+    ConfigPath = "/opt/confidential-containers/share/defaults/kata-containers/configuration-clh-snp.toml"
 {{- end}}
 `
 
