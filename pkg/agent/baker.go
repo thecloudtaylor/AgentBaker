@@ -1158,9 +1158,10 @@ root = "{{GetDataDir}}"{{- end}}
     {{- if TeleportEnabled }}
     snapshotter = "teleportd"
     disable_snapshot_annotations = false
-    {{- end}}
-    {{- if IsKata }}
-    disable_snapshot_annotations = false
+    {{- else}}
+      {{- if IsKata }}
+      disable_snapshot_annotations = false
+      {{- end}}
     {{- end}}
     {{- if IsNSeriesSKU }}
     default_runtime_name = "nvidia-container-runtime"
@@ -1274,9 +1275,10 @@ root = "{{GetDataDir}}"{{- end}}
     {{- if TeleportEnabled }}
     snapshotter = "teleportd"
     disable_snapshot_annotations = false
-    {{- end}}
-    {{- if IsKata }}
-    disable_snapshot_annotations = false
+    {{- else}}
+      {{- if IsKata }}
+      disable_snapshot_annotations = false
+      {{- end}}
     {{- end}}
     default_runtime_name = "runc"
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
