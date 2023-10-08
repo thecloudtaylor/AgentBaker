@@ -46,6 +46,8 @@ state = "C:\\ProgramData\\containerd\\state"
       [plugins.cri.containerd.runtimes]
         [plugins.cri.containerd.runtimes.runhcs-wcow-process]
           runtime_type = "io.containerd.runhcs.v1"
+          container_annotations = ["io.microsoft.container.processdumplocation"], ["io.microsoft.container.processdumpcontainersubdirectory"], ["io.microsoft.wcow.processdumptype"], ["io.microsoft.wcow.processdumpcount"]
+          pod_annotations = ["io.microsoft.wcow.processdumptype"], ["io.microsoft.wcow.processdumpcount"]
           [plugins.cri.containerd.runtimes.runhcs-wcow-process.options]
             Debug = true
             DebugType = 2
