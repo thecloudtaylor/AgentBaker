@@ -22,11 +22,11 @@ steps:
     inputs:
       source: specific
       project: CloudNativeCompute
-      pipeline: 318279
-      specificBuildWithTriggering: true
-      buildVersionToDownload: 'latest'
-      downloadType: 'single'
+      pipeline: $(UVM_PIPELINE_ID)
+      runVersion: specific
+      runId: $(UVM_RUN_ID)
       artifactName: 'drop_build_and_sign_build_and_sign'
+      downloadType: 'single'
       itemPattern: |
         **/igvm-debug-measurement**
         **/kata-containers-igvm-debug.img**
