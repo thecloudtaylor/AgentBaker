@@ -212,7 +212,7 @@ function Test-ValidateFilesOnMoonCake {
 
 function Test-ValidateImagesOnMoonCake {
     foreach ($dir in $map.Keys) {
-        Test-ValidateSinglePackageSignature $dir
+        Test-ValidateFilesOnMoonCake $dir
     }
 
     if ($MisMatchFile.Count -ne 0) {
