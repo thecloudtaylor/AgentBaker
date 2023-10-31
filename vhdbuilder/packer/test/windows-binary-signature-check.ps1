@@ -204,7 +204,7 @@ function Test-ValidateFilesOnMoonCake {
             $mooncakeFileHash = (Get-FileHash -Algorithm SHA256 -Path $mcDest).Hash
 
             if ($globalFileHash -ne $mooncakeFileHash) {
-                $MisMatchFile[$globalFileHash]=$mooncakeFileHash
+                $MisMatchFile[$URL]=$mcURL
             }
         }
     }
