@@ -73,6 +73,9 @@ $SkipMapForSignature=@{
     )
 }
 
+# MisMatchFile is used to record files whose hash values are different on Global and MoonCake
+$MisMatchFile=@{}
+
 # NotSignedResult is used to record unsigned files that we think should be signed
 $NotSignedResult=@{}
 
@@ -122,11 +125,6 @@ function Test-ValidateSinglePackageSignature {
     foreach ($URL in $map[$dir]) {
         $fileName = [IO.Path]::GetFileName($URL)
         $dest = [IO.Path]::Combine($dir, $fileName)
-        if (!(Test-Path $dir)) {
-            New-Item -ItemType Directory $dir -Force | Out-Null
-        }
-
-        DownloadFileWithRetry -URL $URL -Dest $dest -redactUrl
 
         $installDir="c:\SignatureCheck"
         if (!(Test-Path $installDir)) {
@@ -179,4 +177,49 @@ function Test-ValidateSinglePackageSignature {
     }
 }
 
+function Test-ValidateFilesOnMoonCake {
+    param (
+        $dir
+    )
+
+    foreach ($URL in $map[$dir]) {
+        $fileName = [IO.Path]::GetFileName($URL)
+        $dest = [IO.Path]::Combine($dir, $fileName)
+        if (!(Test-Path $dir)) {
+            New-Item -ItemType Directory $dir -Force | Out-Null
+        }
+
+        DownloadFileWithRetry -URL $URL -Dest $dest -redactUrl
+        $globalFileHash = (Get-FileHash -Algorithm SHA256 -Path $dest).Hash
+
+        if ($URL.StartsWith("https://acs-mirror.azureedge.net/")) {
+            $mcURL = $URL.replace("https://acs-mirror.azureedge.net/", "https://kubernetesartifacts.blob.core.chinacloudapi.cn/")
+            $mcDir = [IO.Path]::Combine($dir, "mooncake")
+            $mcDest = [IO.Path]::Combine($mcDir, $fileName)
+            if (!(Test-Path $mcDir)) {
+                New-Item -ItemType Directory $mcDir -Force | Out-Null
+            }
+
+            DownloadFileWithRetry -URL $mcURL -Dest $mcDest -redactUrl
+            $mooncakeFileHash = (Get-FileHash -Algorithm SHA256 -Path $mcDest).Hash
+
+            if ($globalFileHash -ne $mooncakeFileHash) {
+                $MisMatchFile[$globalFileHash]=$mooncakeFileHash
+            }
+        }
+    }
+}
+
+function Test-ValidateImagesOnMoonCake {
+    foreach ($dir in $map.Keys) {
+        Test-ValidateSinglePackageSignature $dir
+    }
+
+    if ($MisMatchFile.Count -ne 0) {
+        $MisMatchFile = (echo $MisMatchFile | ConvertTo-Json -Compress)
+        Write-Error "The following files have different hashes on global and mooncake: $MisMatchFile"
+    }
+}
+
+Test-ValidateImagesOnMoonCake
 Test-ValidateAllSignature
