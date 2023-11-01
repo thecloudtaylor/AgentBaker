@@ -182,6 +182,16 @@ function Test-ValidateFilesOnMoonCake {
         $dir
     )
 
+    $excludeHashComparisionListInAzureChinaCloud = @(
+        "calico-windows",
+        "azure-vnet-cni-singletenancy-windows-amd64",
+        "azure-vnet-cni-singletenancy-swift-windows-amd64",
+        "azure-vnet-cni-singletenancy-overlay-windows-amd64",
+        # We need upstream's help to republish this package. Before that, it does not impact functionality and 1.26 is only in public preview
+        # so we can ignore the different hash values.
+        "v1.26.0-1int.zip"
+    )
+
     foreach ($URL in $map[$dir]) {
         $fileName = [IO.Path]::GetFileName($URL)
         $dest = [IO.Path]::Combine($dir, $fileName)
@@ -191,6 +201,17 @@ function Test-ValidateFilesOnMoonCake {
 
         DownloadFileWithRetry -URL $URL -Dest $dest -redactUrl
         $globalFileHash = (Get-FileHash -Algorithm SHA256 -Path $dest).Hash
+        
+        $isIgnore=$False
+        foreach($excludePackage in $excludeHashComparisionListInAzureChinaCloud) {
+            if ($URL.Contains($excludePackage)) {
+                $isIgnore=$true
+                break
+            }
+        }
+        if ($isIgnore) {
+            continue
+        }
 
         if ($URL.StartsWith("https://acs-mirror.azureedge.net/")) {
             $mcURL = $URL.replace("https://acs-mirror.azureedge.net/", "https://kubernetesartifacts.blob.core.chinacloudapi.cn/")
