@@ -242,5 +242,35 @@ function Test-ValidateImagesOnMoonCake {
     }
 }
 
+function Test-ImagesPulled {
+    Write-Output "Test-ImagesPulled."
+    $targetImagesToPull = $imagesToPull
+
+    $containerdFileName = [IO.Path]::GetFileName($global:defaultContainerdPackageUrl)
+    $dest = [IO.Path]::Combine("c:\akse-cache\containerd\", $containerdFileName)
+
+    $installDir="c:\imagePull"
+    if (!(Test-Path $installDir)) {
+        New-Item -ItemType Directory $installDir -Force | Out-Null
+    }
+    tar -xzf $dest -C $installDir
+
+    Start-Job-To-Expected-State -JobName containerd -ScriptBlock { "C:\imagePull\containerd.exe" }
+    # NOTE:
+    # 1. listing images with -q set is expected to return only image names/references, but in practise
+    #    we got additional digest info. The following command works as a workaround to return only image names instad.
+    #    https://github.com/containerd/containerd/blob/master/cmd/ctr/commands/images/images.go#L89
+    # 2. As select-string with nomatch pattern returns additional line breaks, qurying MatchInfo's Line property keeps
+    #    only image reference as a workaround
+    $pulledImages = (ctr.exe -n k8s.io image ls -q | Select-String -notmatch "sha256:.*" | % { $_.Line } )
+
+    $result = (Compare-Object $targetImagesToPull $pulledImages)
+    if($result) {
+        Write-ErrorWithTimestamp "images to pull do not equal images cached $(($result).InputObject) ."
+        exit 1
+    } 
+}
+
 Test-ValidateImagesOnMoonCake
 Test-ValidateAllSignature
+Test-ImagesPulled
