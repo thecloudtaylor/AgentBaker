@@ -128,7 +128,7 @@ function DownloadFileWithRetry {
         $retryDelay = 0,
         [Switch]$redactUrl = $false
     )
-    curl.exe -f --retry $retryCount --retry-delay $retryDelay -L $URL -o $Dest --silent
+    curl.exe -f --retry $retryCount --retry-delay $retryDelay -L $URL -o $Dest
     if ($LASTEXITCODE) {
         $logURL = $URL
         if ($redactUrl) {
