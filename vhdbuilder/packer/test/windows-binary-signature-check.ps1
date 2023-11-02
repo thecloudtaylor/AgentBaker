@@ -293,7 +293,9 @@ function Test-ImagesPulled {
     }
     tar -xzf $dest -C $installDir
 
-    Start-Job-To-Expected-State -JobName containerd -ScriptBlock { "C:\imagePull\containerd.exe" }
+    cd c:\imagePull
+
+    Start-Job-To-Expected-State -JobName containerd -ScriptBlock { containerd.exe }
     # NOTE:
     # 1. listing images with -q set is expected to return only image names/references, but in practise
     #    we got additional digest info. The following command works as a workaround to return only image names instad.
