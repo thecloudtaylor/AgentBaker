@@ -82,6 +82,44 @@ $NotSignedResult=@{}
 # AllNotSignedFiles is used to record all unsigned files in vhd cache and we exclude files in SkipMapForSignature
 $AllNotSignedFiles=@{}
 
+function Start-Job-To-Expected-State {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Position=0, Mandatory=$true)]
+        [string]$JobName,
+
+        [Parameter(Position=1, Mandatory=$true)]
+        [scriptblock]$ScriptBlock,
+
+        [Parameter(Position=2, Mandatory=$false)]
+        [string]$ExpectedState = 'Running',
+
+        [Parameter(Position=3, Mandatory=$false)]
+        [int]$MaxRetryCount = 10,
+
+        [Parameter(Position=4, Mandatory=$false)]
+        [int]$DelaySecond = 10
+    )
+
+    Begin {
+        $cnt = 0
+    }
+
+    Process {
+        Start-Job -Name $JobName -ScriptBlock $ScriptBlock
+
+        do {
+            Start-Sleep $DelaySecond
+            $job = (Get-Job -Name $JobName)
+            if ($job -and ($job.State -Match $ExpectedState)) { return }
+            $cnt++
+        } while ($cnt -lt $MaxRetryCount)
+
+        Write-ErrorWithTimestamp "Cannot start $JobName"
+        exit 1
+    }
+}
+
 function DownloadFileWithRetry {
     param (
         $URL,
@@ -90,7 +128,7 @@ function DownloadFileWithRetry {
         $retryDelay = 0,
         [Switch]$redactUrl = $false
     )
-    curl.exe -f --retry $retryCount --retry-delay $retryDelay -L $URL -o $Dest
+    curl.exe -f --retry $retryCount --retry-delay $retryDelay -L $URL -o $Dest --silent
     if ($LASTEXITCODE) {
         $logURL = $URL
         if ($redactUrl) {
