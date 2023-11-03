@@ -71,7 +71,7 @@ var _ = Describe("GetSIGAzureCloudSpecConfig", func() {
 		Expect(azurelinux.Definition).To(Equal("V2"))
 		Expect(azurelinux.Version).To(Equal(LinuxSIGImageVersion))
 
-		Expect(len(sigConfig.SigWindowsImageConfig)).To(Equal(4))
+		Expect(len(sigConfig.SigWindowsImageConfig)).To(Equal(6))
 
 		windows2019 := sigConfig.SigWindowsImageConfig[AKSWindows2019]
 		Expect(windows2019.ResourceGroup).To(Equal("AKS-Windows"))
