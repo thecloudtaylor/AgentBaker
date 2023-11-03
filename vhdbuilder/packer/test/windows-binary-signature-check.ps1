@@ -306,7 +306,7 @@ function Test-ImagesPulled {
 
     $result = (Compare-Object $targetImagesToPull $pulledImages)
     if($result) {
-        Write-ErrorWithTimestamp "images to pull do not equal images cached $(($result).InputObject) ."
+        Write-Error "images to pull do not equal images cached $(($result).InputObject) ."
         exit 1
     } 
 }
