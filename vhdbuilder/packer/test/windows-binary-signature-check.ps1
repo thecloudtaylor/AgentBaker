@@ -115,7 +115,7 @@ function Start-Job-To-Expected-State {
             $cnt++
         } while ($cnt -lt $MaxRetryCount)
 
-        Write-ErrorWithTimestamp "Cannot start $JobName"
+        Write-Error "Cannot start $JobName"
         exit 1
     }
 }
