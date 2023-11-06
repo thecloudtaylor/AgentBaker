@@ -214,7 +214,8 @@ function Get-PrivatePackagesToCacheOnVHD {
         Write-Log "Downloading azcopy"
         Invoke-WebRequest -UseBasicParsing "https://aka.ms/downloadazcopy-v10-windows" -OutFile azcopy.zip
         Expand-Archive -Path azcopy.zip -DestinationPath ".\azcopy" -Force
-        export AZCOPY_AUTO_LOGIN_TYPE=MSI
+        $env:AZCOPY_AUTO_LOGIN_TYPE="MSI"
+        $env:AZCOPY_MSI_RESOURCE_STRING=$env:WindowsMSIResourceString
 
         $urls = $env:WindowsPrivatePackagesURL.Split(",")
         foreach ($url in $urls) {
