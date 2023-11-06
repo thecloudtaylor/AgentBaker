@@ -21,7 +21,7 @@
         "vnet_name": "{{env `VNET_NAME`}}",
         "subnet_name": "{{env `SUBNET_NAME`}}",
         "vnet_resource_group_name": "{{env `VNET_RESOURCE_GROUP_NAME`}}",
-        "managed_identity": "/subscriptions/df8ed6e2-7bc3-4600-b141-5d9619382df1/resourceGroups/nodesigprod-agent-pool/providers/Microsoft.ManagedIdentity/userAssignedIdentities/nodesig-agent-identity"
+        "managed_identity": "{{env `MANAGED_IDENTITY`}}"
     },
     "builders": [
         {

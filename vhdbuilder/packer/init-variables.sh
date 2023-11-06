@@ -383,7 +383,7 @@ cat <<EOF > vhdbuilder/packer/settings.json
   "vnet_name": "${VNET_NAME}",
   "subnet_name": "${SUBNET_NAME}",
   "vnet_resource_group_name": "${VNET_RG_NAME}",
-  "managed_identity": "nodesig-agent-identity"
+  "managed_identity": "/subscriptions/df8ed6e2-7bc3-4600-b141-5d9619382df1/resourceGroups/nodesigprod-agent-pool/providers/Microsoft.ManagedIdentity/userAssignedIdentities/nodesig-agent-identity"
 }
 EOF
 
