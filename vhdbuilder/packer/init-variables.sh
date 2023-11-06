@@ -382,7 +382,8 @@ cat <<EOF > vhdbuilder/packer/settings.json
   "windows_sigmode_source_image_version": "${windows_sigmode_source_image_version}",
   "vnet_name": "${VNET_NAME}",
   "subnet_name": "${SUBNET_NAME}",
-  "vnet_resource_group_name": "${VNET_RG_NAME}"
+  "vnet_resource_group_name": "${VNET_RG_NAME}",
+  "managed_identity": "nodesig-agent-identity"
 }
 EOF
 
