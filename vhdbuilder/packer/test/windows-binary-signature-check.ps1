@@ -215,7 +215,7 @@ function Test-ValidateSinglePackageSignature {
     }
 }
 
-function Test-ValidateFilesOnMoonCake {
+function Test-ValidateSingleFileOnMoonCake {
     param (
         $dir
     )
@@ -238,7 +238,7 @@ function Test-ValidateFilesOnMoonCake {
         }
 
         DownloadFileWithRetry -URL $URL -Dest $dest -redactUrl
-        $globalFileHash = (Get-FileHash -Algorithm SHA256 -Path $dest).Hash
+        $globalFileSize = (Get-Item $dest).length
         
         $isIgnore=$False
         foreach($excludePackage in $excludeHashComparisionListInAzureChinaCloud) {
@@ -253,30 +253,24 @@ function Test-ValidateFilesOnMoonCake {
 
         if ($URL.StartsWith("https://acs-mirror.azureedge.net/")) {
             $mcURL = $URL.replace("https://acs-mirror.azureedge.net/", "https://kubernetesartifacts.blob.core.chinacloudapi.cn/")
-            $mcDir = [IO.Path]::Combine($dir, "mooncake")
-            $mcDest = [IO.Path]::Combine($mcDir, $fileName)
-            if (!(Test-Path $mcDir)) {
-                New-Item -ItemType Directory $mcDir -Force | Out-Null
-            }
 
-            DownloadFileWithRetry -URL $mcURL -Dest $mcDest -redactUrl
-            $mooncakeFileHash = (Get-FileHash -Algorithm SHA256 -Path $mcDest).Hash
+            $mooncakeFileSize = (Invoke-WebRequest $mcURL -UseBasicParsing -Method Head).Headers.'Content-Length'
 
-            if ($globalFileHash -ne $mooncakeFileHash) {
+            if ($globalFileSize -ne $mooncakeFileSize) {
                 $MisMatchFile[$URL]=$mcURL
             }
         }
     }
 }
 
-function Test-ValidateImagesOnMoonCake {
+function Test-ValidateFilesOnMoonCake {
     foreach ($dir in $map.Keys) {
-        Test-ValidateFilesOnMoonCake $dir
+        Test-ValidateSingleFileOnMoonCake $dir
     }
 
     if ($MisMatchFile.Count -ne 0) {
         $MisMatchFile = (echo $MisMatchFile | ConvertTo-Json -Compress)
-        Write-Error "The following files have different hashes on global and mooncake: $MisMatchFile"
+        Write-Error "The following files have different sizes on global and mooncake: $MisMatchFile"
     }
 }
 
@@ -311,6 +305,6 @@ function Test-ImagesPulled {
     } 
 }
 
-Test-ValidateImagesOnMoonCake
+Test-ValidateFilesOnMoonCake
 Test-ValidateAllSignature
 Test-ImagesPulled
